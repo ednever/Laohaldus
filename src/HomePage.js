@@ -28,7 +28,15 @@ function HomePage(){
           <a href="https://codepen.io/freeCodeCamp/full/zNqgVx" target="_blank" class="project project-tile">
             <img class="project-image" src="https://cdn.freecodecamp.org/testable-projects-fcc/images/tribute.jpg" alt="project" />
             <p class="project-title"><span class="code">&lt;</span>Tribute Page<span class="code">&#47;&gt;</span></p>
-          </a>          
+          </a>   
+          <a href="https://codepen.io/freeCodeCamp/full/zNqgVx" target="_blank" class="project project-tile">
+            <img class="project-image" src="https://cdn.freecodecamp.org/testable-projects-fcc/images/tribute.jpg" alt="project" />
+            <p class="project-title"><span class="code">&lt;</span>Tribute Page<span class="code">&#47;&gt;</span></p>
+          </a> 
+          <a href="https://codepen.io/freeCodeCamp/full/zNqgVx" target="_blank" class="project project-tile">
+            <img class="project-image" src="https://cdn.freecodecamp.org/testable-projects-fcc/images/tribute.jpg" alt="project" />
+            <p class="project-title"><span class="code">&lt;</span>Tribute Page<span class="code">&#47;&gt;</span></p>
+          </a>        
         </div>
       </section>
     </div>
