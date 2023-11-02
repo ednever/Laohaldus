@@ -1,0 +1,67 @@
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 100vh;
+}
+
+.card {
+  width: 300px;
+  background-color: #fff;
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  text-align: center;
+}
+
+.logregh {
+  font-family: Arial, sans-serif;
+  font-size: 1.5em;
+  font-weight: bold; 
+  margin-top: 0.67em; 
+  color: #007BFF;
+  margin-bottom: 20px;
+}
+
+#form {
+  display: flex;
+  flex-direction: column;
+}
+
+.logreglb {
+  font-family: Arial, sans-serif;
+  color: black;
+  text-align: left;
+  margin-bottom: 5px;
+}
+
+.logregin {
+  font-family: Arial, sans-serif;
+  color: black;
+  padding: 10px;
+  margin-bottom: 10px;
+  border: 1px solid #ddd;
+  border-radius: 5px;
+}
+
+.logregbut {
+  font-family: Arial, sans-serif;
+  padding: 10px;
+  background-color: #007BFF;
+  color: #fff;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.switch {
+  font-family: Arial, sans-serif;
+  color: black;
+  margin-top: 15px;
+  font-size: 14px;
+}
+
+.switch a {
+  color: #007BFF;
+  text-decoration: none;
+}
