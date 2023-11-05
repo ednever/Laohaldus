@@ -9,12 +9,41 @@ function RegisterPage() {
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  function Register(username, email, password) {
-    //window.location.href = "http://localhost:3000/"
+  async function Register(username, email, password) {
+    if (username .trim() !== "" && email.trim() !== "" && password.trim() !== "") {
+      try {
+        const response = await fetch('https://localhost:7011/Kasutaja/lisa/' + username + '/' + email + '/' + password, 
+          { method: "POST", headers: { "Content-Type": "application/json" }}); 
 
-    usernameRef.current.value = "";
-    emailRef.current.value = ""; 
-    passwordRef.current.value = "";
+        if (response.ok) {
+          const json = await response.json(); 
+
+          if (json === true) {  
+
+            alert("Регистрация прошла успешно");
+
+            usernameRef.current.value = "";
+            emailRef.current.value = ""; 
+            passwordRef.current.value = "";
+
+          } else {
+            alert("Такая почта уже используется");
+          } 
+
+        } else {
+            console.error("Ошибка при получении почты Kasutaja:", response.status, response.statusText);        
+        }
+
+
+      } catch (error) {
+        console.error("Произошла ошибка при запросе:", error);
+      } 
+
+      
+
+    } else {
+      alert('Поля пусты или содержат только пробелы.');
+    }
   }
 
   return (

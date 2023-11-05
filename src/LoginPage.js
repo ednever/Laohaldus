@@ -7,12 +7,32 @@ function LoginPage() {
   const emailRef = useRef();
   const passwordRef = useRef();
 
-  function Testik(email, password) {
-    emailRef.current.value = ""; 
-    passwordRef.current.value = "";
-    
-    auth.login();
-    window.location.href = "http://localhost:3000/"
+  async function Testik(email, password) {
+    if (email.trim() !== "" && password.trim() !== "") {
+        try {
+          const response = await fetch('https://localhost:7011/Kasutaja/kontroll/' + email + '/' + password);          
+          if (response.ok) {
+              const username = await response.text(); 
+
+              if (username !== "") {      
+                emailRef.current.value = ""; 
+                passwordRef.current.value = "";   
+                auth.login();
+                auth.user(username, email);
+                window.location.href = "http://localhost:3000/";
+              } else {
+                alert("Неправильная почта или пароль");
+              } 
+
+          } else {
+              console.error("Ошибка при получении данных Toode:", response.status, response.statusText);        
+          }
+        } catch (error) {
+          console.error("Произошла ошибка при запросе:", error);
+        }           
+    } else {
+      alert('Поля пусты или содержат только пробелы.');
+    }
   }
 
   return (   

@@ -29,6 +29,7 @@ html {
   html {
     font-size: 60%;
   }
+  
 }
 
 /* 980px / 16px = 61.25em */
@@ -124,8 +125,8 @@ img {
   display: flex;
   justify-content: center; 
   align-items: center;
-  margin-left: 80%;
-  margin-right: 100%;
+  /*margin-left: 80%;
+  margin-right: 100%;*/
 }
 
 /*------------------------------------------*/

@@ -1,0 +1,7 @@
+{
+    "short_name": "Laohaldus",
+    "name": "Laohaldussusteem",
+    
+    "start_url": ".",
+    "display": "standalone"
+  }

@@ -60,8 +60,8 @@ function HomePage(){
         <h2 class="projects-section-header">Kategooriad</h2>
         <div class="projects-grid">
         {kategooriad.map((kategooria) => (
-        <a href="kategooriad" target="_blank" class="project project-tile">
-            <img class="project-image" src="https://tsenter.ee/wp-content/uploads/2018/05/a-6.jpg" alt="kategooria" />
+        <a href="tooted" onClick={() => localStorage.setItem('kategooriaId', kategooria.id)} class="project project-tile">
+            <img class="project-image" src={kategooria.pilt} alt="kategooria" />
             <p class="project-title"><span class="code">&lt;</span>{kategooria.nimetus}<span class="code">&#47;&gt;</span></p>
         </a> 
         ))}       
