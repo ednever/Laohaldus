@@ -17,7 +17,7 @@ function LoginPage() {
               if (username !== "") {      
                 emailRef.current.value = ""; 
                 passwordRef.current.value = "";   
-                auth.login();
+                auth.login();               
                 auth.user(username, email);
                 window.location.href = "http://localhost:3000/";
               } else {

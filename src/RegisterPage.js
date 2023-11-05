@@ -10,7 +10,7 @@ function RegisterPage() {
   const passwordRef = useRef();
 
   async function Register(username, email, password) {
-    if (username .trim() !== "" && email.trim() !== "" && password.trim() !== "") {
+    if (username.trim() !== "" && email.trim() !== "" && password.trim() !== "") {
       try {
         const response = await fetch('https://localhost:7011/Kasutaja/lisa/' + username + '/' + email + '/' + password, 
           { method: "POST", headers: { "Content-Type": "application/json" }}); 
