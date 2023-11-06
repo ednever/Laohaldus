@@ -1,8 +1,9 @@
 import { useEffect, useState, useContext } from 'react';
 import { AuthContext } from './AuthContext';
+import NavigationPanel from './NavigationPanel';
 
 function HomePage(){
-  const auth = useContext(AuthContext);
+  //const auth = useContext(AuthContext);
 
   const [kategooriad, setKategooriad] = useState([]);
 
@@ -32,26 +33,7 @@ function HomePage(){
 
   return (
     <div className="App">
-      <nav id="navbar" class="nav">       
-        <ul class="nav-list">
-          <li class="left-item"><strong>Laohaldus</strong></li>
-          <div class="centered-items">           
-            <li><a href="#welcome-section">Meiest</a></li>
-            <li class="dropdown">
-              <a href="#projects">Kategooriad</a>
-              <div class="dropdown-content">
-                {kategooriad.map((kategooria) => (<a href="kategooriad">{kategooria.nimetus}</a>))}
-              </div>
-            </li>
-            <li><a href="#projects">Tooted</a></li>
-          </div>                    
-          {auth.isAuthenticated ? (
-            <li><button onClick={() => auth.logout()}>Sign out</button></li>
-          ) : (
-            <li><button onClick={() => window.location.href = "http://localhost:3000/login"}>Login</button></li>
-          )}
-        </ul>
-      </nav>
+      <NavigationPanel />
       <section id="welcome-section" class="welcome-section">
         <h1>Laohaldussüsteem</h1>
         <p>Paremad tooted maailmas</p>

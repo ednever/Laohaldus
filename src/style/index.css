@@ -296,3 +296,76 @@ img {
   transform: translateX(0);
   transition: transform 0.3s ease-out;
 }
+
+/*---------------------------------------------------*/
+
+.custom-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 0 auto;
+  background-color: #fff;
+  font-style: normal;
+  
+}
+
+.custom-table th {
+  background-color: #333;
+  padding: 10px;
+  text-align: left;
+}
+
+.custom-table th,
+.custom-table td {
+  padding: 10px;
+  border: 1px solid #ccc;
+}
+
+.custom-table td {
+  color: var(--main-gray);
+}
+
+.custom-table tr:nth-child(even) {
+  background-color: #f2f2f2;
+}
+
+.custom-table tr:hover {
+  background-color: #ddd;
+}
+
+/*---------------------------------------------------*/
+
+input[type="number"] {
+  width: 50px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  text-align: center; 
+}
+
+input[type="number"]:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/*---------------------------------------------------*/
+
+ 
+.tootedbtn {
+  background-color: var(--main-red);
+  color: #fff;
+  padding: 10px 20px;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.tootedbtn:hover {
+  background-color: #0056b3;
+}
+
+.tootedbtn:active {
+  background-color: #003f7f;
+}

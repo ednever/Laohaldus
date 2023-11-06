@@ -1,7 +1,8 @@
-import { useEffect, useState, useRef } from 'react';
-
+import { useEffect, useState, useRef, useContext } from 'react';
+import { AuthContext } from './AuthContext';
 
 function TootedPage() {
+    const auth = useContext(AuthContext);
     const [tooted, setTooted] = useState([]);
     const [kategooria, setKategooria] = useState("");
 
@@ -37,30 +38,32 @@ function TootedPage() {
     }, []);
 
     async function LisaToodeOstukorvi(toodeId, kogus) {
-        /*if (kogus !== "" || kogus !== 0) {
-            try {
+        if (kogus !== "" && kogus !== 0) {
+            alert('крут');
+            /*try {
                 const response = await fetch('https://localhost:7011/Tellimus/lisa/' + toodeId + '/' + kogus, 
                     { method: "POST", headers: { "Content-Type": "application/json" }});
         
         
             } catch (error) {
                 console.error("Произошла ошибка при запросе:", error);
-            } 
+            } */
         } else {
             alert('Выберите количество товара');
-        }*/
+        }
     }
     
     return (
         <div className='App'>
-            <section class="welcome-section">
+            <section className="welcome-section">
                 <h1>{kategooria}</h1>
-                <p><table>
+                <p><table className="custom-table">
                     <thead>
                         <th>Nimetus</th>
                         <th>Kogus</th>
                         <th>Ühik</th>
                         <th>Hind</th>
+                        <th colSpan={2}></th>   
                     </thead>
                     {tooted.length > 0 ? (
                         <tbody>
@@ -70,8 +73,14 @@ function TootedPage() {
                                 <td>{toode.kogus}</td>
                                 <td>{toode.uhik}</td>
                                 <td>{toode.hind}</td>
-                                <td><input ref={kogusRef} type='number' min={0} max={toode.kogus}/></td>
-                                <td><button onClick={LisaToodeOstukorvi(toode.id, kogusRef.current.value)}>Ostukorvi</button></td>
+                                <td><input ref={kogusRef} type='number' min={0} max={toode.kogus}/></td>   
+                                <td>                         
+                                {auth.isAuthenticated ? (
+                                    <button className="tootedbtn" onClick={() => LisaToodeOstukorvi(toode.id, kogusRef.current.value)}>↪</button>
+                                ) : (
+                                    <button className="tootedbtn" onClick={() => alert('Чтобы добавить товар в корзину войдите в аккаунт')}>↪</button>
+                                )}
+                                </td>
                             </tr>
                             ))}
                         </tbody>
