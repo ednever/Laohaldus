@@ -10,11 +10,12 @@ export function AuthContextProvider({ children }) {
 
   useEffect(() => {
     const storedIsAuthenticated = localStorage.getItem('isAuthenticated');
-    const userName = localStorage.getItem('username');
-    const userEmail = localStorage.getItem('email');
-    const isAdmin = localStorage.getItem('isAdmin');
+
     if (storedIsAuthenticated === 'true') {
       setIsAuthenticated(true);
+      setUsername(localStorage.getItem('username'));
+      setIsAdmin(localStorage.getItem('isAdmin'));
+      setUserEmail(localStorage.getItem('email'));
     }
   }, []);
 

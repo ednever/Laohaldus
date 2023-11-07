@@ -76,9 +76,9 @@ function TootedPage() {
                                 <td><input ref={kogusRef} type='number' min={0} max={toode.kogus}/></td>   
                                 <td>                         
                                 {auth.isAuthenticated ? (
-                                    <button className="tootedbtn" onClick={() => LisaToodeOstukorvi(toode.id, kogusRef.current.value)}>↪</button>
+                                    <button onClick={() => LisaToodeOstukorvi(toode.id, kogusRef.current.value)}>↪</button>
                                 ) : (
-                                    <button className="tootedbtn" onClick={() => alert('Чтобы добавить товар в корзину войдите в аккаунт')}>↪</button>
+                                    <button onClick={() => alert('Чтобы добавить товар в корзину войдите в аккаунт')}>↪</button>
                                 )}
                                 </td>
                             </tr>
@@ -87,7 +87,13 @@ function TootedPage() {
                     ) : (
                         <tbody>
                             <tr>
-                            <td>Loading...</td>
+                                <td></td>
+                                <td>
+                                    <i class="fa fa-refresh fa-spin fa-2x fa-fw"></i>
+                                    <span class="sr-only">Loading...</span>  
+                                </td>
+                                <td></td>
+                                <td></td>
                             </tr>
                         </tbody>
                     )}

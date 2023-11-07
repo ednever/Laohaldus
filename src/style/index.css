@@ -332,26 +332,8 @@ img {
   background-color: #ddd;
 }
 
-/*---------------------------------------------------*/
-
-input[type="number"] {
-  width: 50px;
-  padding: 8px;
-  border: 1px solid #ccc;
-  border-radius: 4px;
-  font-size: 16px;
-  text-align: center; 
-}
-
-input[type="number"]:focus {
-  outline: none;
-  border-color: #007bff;
-}
-
-/*---------------------------------------------------*/
-
- 
-.tootedbtn {
+.custom-table button,
+.maksebtn {
   background-color: var(--main-red);
   color: #fff;
   padding: 10px 20px;
@@ -362,10 +344,28 @@ input[type="number"]:focus {
   transition: background-color 0.3s;
 }
 
-.tootedbtn:hover {
+.custom-table button:hover,
+.maksebtn:hover {
   background-color: #0056b3;
 }
 
-.tootedbtn:active {
+.custom-table button:active,
+.maksebtn:active {
   background-color: #003f7f;
 }
+
+.custom-table input[type="number"] {
+  width: 50px;
+  padding: 8px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  font-size: 16px;
+  text-align: center; 
+}
+
+.custom-table input[type="number"]:focus {
+  outline: none;
+  border-color: #007bff;
+}
+
+/*---------------------------------------------------*/

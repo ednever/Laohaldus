@@ -31,14 +31,20 @@ function NavigationPanel() {
             <ul class="nav-list">
             <li class="left-item"><strong>Laohaldus</strong></li>
             <div class="centered-items">           
-                <li><a href="#welcome-section">Meiest</a></li>
+                <li><a href="#welcome-section"><i class="fa fa-home fa-fw" aria-hidden="true"></i>Meiest</a></li>
                 <li class="dropdown">
                 <a href="#projects">Kategooriad</a>
                 <div class="dropdown-content">
                     {kategooriad.map((kategooria) => (<a href="kategooriad">{kategooria.nimetus}</a>))}
                 </div>
                 </li>
-                <li><a href="#projects">Tooted</a></li>
+                <li>
+                {auth.isAuthenticated ? (
+                    <a href="ostukorv">Ostukorv</a>
+                    ) : (
+                    null
+                )}
+                </li>
             </div>                    
             {auth.isAuthenticated ? (
                 <li><button onClick={() => auth.logout()}>Sign out</button></li>
