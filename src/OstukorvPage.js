@@ -28,11 +28,17 @@ function OstukorvPage() {
   } , []);
 
   function Maksa() {
+
     const selectedValues = [];
-    const tdElements = document.querySelectorAll("tbody tr");
-    tdElements.forEach((td) => {
-      selectedValues.push(td.textContent + ".");
+
+    const trElements = document.querySelectorAll("tbody tr");
+    trElements.forEach((tr) => {
+      const tdElements = tr.querySelectorAll("td");
+
+      selectedValues.push(tdElements[0].textContent + "." + tdElements[1].textContent);
+      
     });
+
     console.log(selectedValues);
 
     /*fetch("https://localhost:7011/TellimusArves/lisa/" + JSON.stringify(selectedValues), {"method": "POST"});*/

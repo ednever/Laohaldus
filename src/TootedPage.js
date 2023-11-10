@@ -38,16 +38,19 @@ function TootedPage() {
     }, []);
 
     async function LisaToodeOstukorvi(toodeId, kogus) {
-        if (kogus !== "" && kogus !== 0) {
-            alert('крут');
-            /*try {
-                const response = await fetch('https://localhost:7011/Tellimus/lisa/' + toodeId + '/' + kogus, 
-                    { method: "POST", headers: { "Content-Type": "application/json" }});
-        
-        
+        if (kogus !== "" && kogus !== "0") {           
+            try {
+                alert('Товар добавлен в корзину');
+                fetch('https://localhost:7011/Tellimus/lisa/' + toodeId + '/' + kogus + '/' + localStorage.getItem('email'), 
+                    { method: "POST", headers: { "Content-Type": "application/json" }}); 
+
+                document.getElementById(toodeId).value = ""; 
+                document.getElementById(toodeId).disabled = true;
+                document.getElementById('button' + toodeId).disabled = true;
+                
             } catch (error) {
                 console.error("Произошла ошибка при запросе:", error);
-            } */
+            } 
         } else {
             alert('Выберите количество товара');
         }
@@ -73,12 +76,12 @@ function TootedPage() {
                                 <td>{toode.kogus}</td>
                                 <td>{toode.uhik}</td>
                                 <td>{toode.hind}</td>
-                                <td><input ref={kogusRef} type='number' min={0} max={toode.kogus}/></td>   
+                                <td><input id={toode.id} type='number' min={0} max={toode.kogus}/></td>
                                 <td>                         
                                 {auth.isAuthenticated ? (
-                                    <button onClick={() => LisaToodeOstukorvi(toode.id, kogusRef.current.value)}>↪</button>
+                                    <button id={'button' + toode.id} onClick={() => LisaToodeOstukorvi(toode.id, document.getElementById(`${toode.id}`).value)}><i class="fa fa-shopping-cart fa-2x fa-fw"></i></button>
                                 ) : (
-                                    <button onClick={() => alert('Чтобы добавить товар в корзину войдите в аккаунт')}>↪</button>
+                                    <button onClick={() => alert('Чтобы добавить товар в корзину войдите в аккаунт')}><i class="fa fa-user-circle-o fa-2x fa-fw"></i></button>
                                 )}
                                 </td>
                             </tr>
