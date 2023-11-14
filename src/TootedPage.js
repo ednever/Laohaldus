@@ -58,6 +58,28 @@ function TootedPage() {
     
     return (
         <div className='App'>
+            <section id="projects" class="projects-section">
+                <h1 class="projects-section-header">{kategooria}</h1>
+                
+                {tooted.length > 0 ? (
+                    <div class="projects-grid">
+                        {tooted.map((toode) => (
+                        <a href="tooted" class="project project-tile">
+                            <img class="project-image" src={toode.pilt} alt="toode" />
+                            <p class="project-title"><span class="code">&lt;</span>{kategooria.nimetus}<span class="code">&#47;&gt;</span></p>
+                        </a> 
+                        
+                        ))}
+                    </div>
+                ) : (
+                    <div class="projects-grid">
+                        <i class="fa fa-refresh fa-spin fa-2x fa-fw"></i>
+                        <span class="sr-only">Loading...</span>
+                    </div>                    
+                )}
+                       
+                
+            </section>
             <section className="welcome-section">
                 <h1>{kategooria}</h1>
                 <p><table className="custom-table">
