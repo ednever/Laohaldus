@@ -41,7 +41,8 @@ function OstukorvPage() {
 
     console.log(selectedValues);
 
-    /*fetch("https://localhost:7011/TellimusArves/lisa/" + JSON.stringify(selectedValues), {"method": "POST"});*/
+    //fetch("https://localhost:7011/Arve/lisa/", {"method": "POST"});
+    //fetch("https://localhost:7011/TellimusArves/lisa/" + JSON.stringify(selectedValues), {"method": "POST"});
 
   }
 
@@ -78,7 +79,7 @@ function OstukorvPage() {
                       <tr key={tellimus.id}>
                           <td>{tellimus.toodeId}</td> 
                           <td>{tellimus.kogus}</td> 
-                          <button onClick={() => Kustuta(tellimus.id)}><i class="fa fa-trash fa-2x" aria-hidden="true"></i></button>
+                          <td><button onClick={() => Kustuta(tellimus.id)}><i class="fa fa-trash fa-2x" aria-hidden="true"></i></button></td>
                       </tr>
                       ))}
                   </tbody>

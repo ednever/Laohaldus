@@ -35,7 +35,7 @@ function NavigationPanel() {
                 <li class="dropdown">
                 <a href="#projects">Kategooriad</a>
                 <div class="dropdown-content">
-                    {kategooriad.map((kategooria) => (<a href="kategooriad">{kategooria.nimetus}</a>))}
+                    {kategooriad.map((kategooria) => (<a href="tooted" onClick={() => localStorage.setItem('kategooriaId', kategooria.id)}>{kategooria.nimetus}</a>))}
                 </div>
                 </li>
                 <li>
