@@ -9,6 +9,8 @@ import LoginPage from './LoginPage';
 import RegisterPage from './RegisterPage';
 import TootedPage from './TootedPage';
 import OstukorvPage from './OstukorvPage';
+import ToodePage from './ToodePage';
+import AdminPage from './AdminPage';
 
 const root = ReactDOM.createRoot(document.getElementById('root'));
 root.render(
@@ -21,6 +23,8 @@ root.render(
           <Route path="/register" element={<RegisterPage />} />
           <Route path="/tooted" element={<TootedPage />} />
           <Route path="/ostukorv" element={<OstukorvPage />} />
+          <Route path="/toode" element={<ToodePage />} />
+          <Route path="/admin" element={<AdminPage />} />
         </Routes>
       </AuthContextProvider>     
     </BrowserRouter>

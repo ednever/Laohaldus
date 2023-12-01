@@ -27,20 +27,27 @@ function NavigationPanel() {
     }, []);
     
     return (        
-        <nav id="navbar" class="nav">       
-            <ul class="nav-list">
-            <li class="left-item"><strong>Laohaldus</strong></li>
-            <div class="centered-items">           
-                <li><a href="#welcome-section"><i class="fa fa-home fa-fw" aria-hidden="true"></i>Meiest</a></li>
-                <li class="dropdown">
-                <a href="#projects">Kategooriad</a>
-                <div class="dropdown-content">
+        <nav id="navbar" className="nav">       
+            <ul className="nav-list">
+            <li className="left-item"><strong>Laohaldus</strong></li>
+            <div className="centered-items">           
+                <li><a href="/#welcome-section"><i className="fa fa-home fa-fw" aria-hidden="true"></i>Meiest</a></li>
+                <li className="dropdown">
+                <a href="/#projects">Kategooriad</a>
+                <div className="dropdown-content">
                     {kategooriad.map((kategooria) => (<a href="tooted" onClick={() => localStorage.setItem('kategooriaId', kategooria.id)}>{kategooria.nimetus}</a>))}
                 </div>
                 </li>
                 <li>
                 {auth.isAuthenticated ? (
                     <a href="ostukorv">Ostukorv</a>
+                    ) : (
+                    null
+                )}
+                </li>
+                <li>
+                {auth.isAdmin === 'True' ? (
+                    <a href="admin">Panel</a>
                     ) : (
                     null
                 )}

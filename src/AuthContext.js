@@ -27,6 +27,7 @@ export function AuthContextProvider({ children }) {
   const logout = () => {
     setIsAuthenticated(false);
     localStorage.setItem('isAuthenticated', 'false');
+    localStorage.setItem('isAdmin', 'false');
   };
 
   function user(nameAndIsAdmin, email) {

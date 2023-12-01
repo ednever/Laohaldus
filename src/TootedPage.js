@@ -1,5 +1,6 @@
 import { useEffect, useState, useRef, useContext } from 'react';
 import { AuthContext } from './AuthContext';
+import NavigationPanel from './NavigationPanel';
 
 function TootedPage() {
     const auth = useContext(AuthContext);
@@ -12,7 +13,7 @@ function TootedPage() {
     useEffect(() => {
         async function fetchData() {
             try {
-                const responseTooted = await fetch("https://localhost:7011/Toode/" + kategooriaId);
+                const responseTooted = await fetch("https://localhost:7011/Toode/kat/" + kategooriaId);
                 const responseKategooria = await fetch("https://localhost:7011/Kategooria/" + kategooriaId);
 
                 if (responseTooted.ok && responseKategooria.ok) 
@@ -58,73 +59,32 @@ function TootedPage() {
     
     return (
         <div className='App'>
-            <section id="projects" class="projects-section">
-                <h1 class="projects-section-header">{kategooria}</h1>
+            <NavigationPanel />
+            <section id="projects" className="projects-section">
+                <h1 className="projects-section-header">{kategooria}</h1>
                 
                 {tooted.length > 0 ? (
-                    <div class="projects-grid">
+                    <div className="test-grid">
                         {tooted.map((toode) => (
-                        <a href="tooted" class="project project-tile">
-                            <img class="project-image" src={toode.pilt} alt="toode" />
-                            <p class="project-title"><span class="code">&lt;</span>{kategooria.nimetus}<span class="code">&#47;&gt;</span></p>
-                        </a> 
-                        
+                            <div className="test" key={toode.id}>
+                            <a href="toode" onClick={() => localStorage.setItem('toodeId', toode.id)} className="test-tile">
+                                <img className="test-image" src={toode.pilt} alt="toode" />
+                                <p className="project-title">{toode.nimetus}</p>                                                                
+                                <div className="test-details">
+                                    <p>Kogus: {toode.kogus} {toode.uhik}</p>
+                                    <p>Hind: {toode.hind}€</p>
+                                </div>
+                            </a>
+                            </div>                            
                         ))}
-                    </div>
+                    </div>                                      
                 ) : (
-                    <div class="projects-grid">
-                        <i class="fa fa-refresh fa-spin fa-2x fa-fw"></i>
-                        <span class="sr-only">Loading...</span>
+                    <div className="projects-grid">
+                        <i className="fa fa-refresh fa-spin fa-2x fa-fw"></i>
+                        <span className="sr-only">Loading...</span>
                     </div>                    
-                )}
-                       
-                
-            </section>
-            <section className="welcome-section">
-                <h1>{kategooria}</h1>
-                <p><table className="custom-table">
-                    <thead>
-                        <th>Nimetus</th>
-                        <th>Kogus</th>
-                        <th>Ühik</th>
-                        <th>Hind</th>
-                        <th colSpan={2}></th>   
-                    </thead>
-                    {tooted.length > 0 ? (
-                        <tbody>
-                            {tooted.map((toode) => (
-                            <tr key={toode.id}>
-                                <td>{toode.nimetus}</td>
-                                <td>{toode.kogus}</td>
-                                <td>{toode.uhik}</td>
-                                <td>{toode.hind}</td>
-                                <td><input id={toode.id} type='number' min={0} max={toode.kogus}/></td>
-                                <td>                         
-                                {auth.isAuthenticated ? (
-                                    <button id={'button' + toode.id} onClick={() => LisaToodeOstukorvi(toode.id, document.getElementById(`${toode.id}`).value)}><i class="fa fa-shopping-cart fa-2x fa-fw"></i></button>
-                                ) : (
-                                    <button onClick={() => alert('Чтобы добавить товар в корзину войдите в аккаунт')}><i class="fa fa-user-circle-o fa-2x fa-fw"></i></button>
-                                )}
-                                </td>
-                            </tr>
-                            ))}
-                        </tbody>
-                    ) : (
-                        <tbody>
-                            <tr>
-                                <td></td>
-                                <td>
-                                    <i class="fa fa-refresh fa-spin fa-2x fa-fw"></i>
-                                    <span class="sr-only">Loading...</span>  
-                                </td>
-                                <td></td>
-                                <td></td>
-                            </tr>
-                        </tbody>
-                    )}
-                    
-                </table></p>
-            </section>          
+                )}                                      
+            </section>       
         </div>
     );
 }

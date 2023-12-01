@@ -34,17 +34,17 @@ function HomePage(){
   return (
     <div className="App">
       <NavigationPanel />
-      <section id="welcome-section" class="welcome-section">
+      <section id="welcome-section" className="welcome-section">
         <h1>Laohaldussüsteem</h1>
         <p>Paremad tooted maailmas</p>
       </section>
       <section id="projects" class="projects-section">
-        <h2 class="projects-section-header">Kategooriad</h2>
-        <div class="projects-grid">
+        <h2 className="projects-section-header">Kategooriad</h2>
+        <div className="projects-grid">
         {kategooriad.map((kategooria) => (
-        <a href="tooted" onClick={() => localStorage.setItem('kategooriaId', kategooria.id)} class="project project-tile">
-            <img class="project-image" src={kategooria.pilt} alt="kategooria" />
-            <p class="project-title"><span class="code">&lt;</span>{kategooria.nimetus}<span class="code">&#47;&gt;</span></p>
+        <a href="tooted" onClick={() => localStorage.setItem('kategooriaId', kategooria.id)} className="project project-tile">
+            <img className="project-image" src={kategooria.pilt} alt="kategooria" />
+            <p className="project-title"><span className="code">&lt;</span>{kategooria.nimetus}<span className="code">&#47;&gt;</span></p>
         </a> 
         ))}       
         </div>

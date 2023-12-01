@@ -1,5 +1,6 @@
 import { useContext, useEffect, useState } from 'react';
 import { AuthContext } from './AuthContext';
+import NavigationPanel from './NavigationPanel';
 
 function OstukorvPage() {
   const auth = useContext(AuthContext);
@@ -63,8 +64,9 @@ function OstukorvPage() {
 
   return (       
     <div className="App">
+      <NavigationPanel />
       {auth.isAuthenticated ? (
-        <section id="welcome-section" class="welcome-section">
+        <section id="welcome-section" className="welcome-section">
           <h1>Ostukorv</h1>
           <p>
             <table className="custom-table">
@@ -79,7 +81,7 @@ function OstukorvPage() {
                       <tr key={tellimus.id}>
                           <td>{tellimus.toodeId}</td> 
                           <td>{tellimus.kogus}</td> 
-                          <td><button onClick={() => Kustuta(tellimus.id)}><i class="fa fa-trash fa-2x" aria-hidden="true"></i></button></td>
+                          <td><button onClick={() => Kustuta(tellimus.id)}><i className="fa fa-trash fa-2x" aria-hidden="true"></i></button></td>
                       </tr>
                       ))}
                   </tbody>
@@ -87,8 +89,8 @@ function OstukorvPage() {
                   <tbody>
                       <tr>
                         <td>
-                          <i class="fa fa-refresh fa-spin fa-2x fa-fw"></i>
-                          <span class="sr-only">Loading...</span>
+                          <i className="fa fa-refresh fa-spin fa-2x fa-fw"></i>
+                          <span className="sr-only">Loading...</span>
                         </td>
                       </tr>
                   </tbody>
@@ -98,7 +100,7 @@ function OstukorvPage() {
           <p><button className='maksebtn' onClick={() => Maksa()}>Maksa</button></p>
         </section>
         ) : (
-          <section id="welcome-section" class="welcome-section">
+          <section id="welcome-section" className="welcome-section">
             <h1>Ostukorv</h1>
             <p>Войдите в аккаунт чтобы пользоваться корзиной</p>
           </section>
