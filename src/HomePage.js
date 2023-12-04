@@ -44,7 +44,7 @@ function HomePage(){
         {kategooriad.map((kategooria) => (
         <a href="tooted" onClick={() => localStorage.setItem('kategooriaId', kategooria.id)} className="project project-tile">
             <img className="project-image" src={kategooria.pilt} alt="kategooria" />
-            <p className="project-title"><span className="code">&lt;</span>{kategooria.nimetus}<span className="code">&#47;&gt;</span></p>
+            <p className="project-title"><span className="code">&lt; </span>{kategooria.nimetus}<span className="code"> &gt;</span></p>
         </a> 
         ))}       
         </div>

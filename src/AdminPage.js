@@ -4,65 +4,301 @@ import NavigationPanel from './NavigationPanel';
 
 function AdminPage() {
     const auth = useContext(AuthContext);
+    const [tooted, setTooted] = useState([]);
+    
 
     useEffect(() => {
-        // async function fetchData() {
-        //     try {
-        //         const response = await fetch("https://localhost:7011/Toode/" + toodeId);
-
-        //         if (response.ok) {
-        //             const json = await response.json();
-        //             setToode(json);   
-        //         } else {
-        //             console.error("Ошибка при получении данных Toode:", response.status, response.statusText);        
-        //         }
-    
-        //     } catch (error) {
-        //         console.error("Произошла ошибка при запросах:", error);
-        //     }
-        // }
-    
-        // fetchData();
+        async function fetchData() {
+            try {
+                const response = await fetch("https://localhost:7011/Toode", {
+                    method: "GET",
+                    headers: { "Accept": "application/json" }
+                });
+                if (response.ok) {
+                    const json = await response.json();
+                    setTooted(json);                          
+                } else {
+                    console.error("Ошибка при получении данных Toode:", response.status, response.statusText);        
+                }
+      
+            } catch (error) {
+                console.error("Произошла ошибка при запросе:", error);
+            }
+          }
+        
+          fetchData();
     }, []);
 
+    // async function getTooted() {                
+    //     const response = await fetch("https://localhost:7011/Toode", {
+    //         method: "GET",
+    //         headers: { "Accept": "application/json" }
+    //     });
+    //     if (response.ok === true) {
+    //         const tooted = await response.json();
+    //         const rows = document.querySelector("tbody");
+    //         rows.innerHTML = " ";
+    //         for (const toode of tooted) {
+    //             let kategooria = "";
 
+    //             //Вместо ID команды показывается название
+    //             const responseK = await fetch("https://localhost:7011/Kategooria/" + toode.kategooriaId, {
+    //                 method: "GET",
+    //                 headers: { "Accept": "application/json" }
+    //             });
+
+    //             if (responseK.ok === true) {
+    //                 kategooria = await responseK.text();
+    //             }
+
+    //             //rows.append(row(toode, kategooria.replace(/"/g, '')));
+    //         }
+    //     }         
+    // }
+
+    //Создание строки для таблицы
+    // function row(toode, kategooria) {
+    //     const tr = document.createElement("tr");
+    //     tr.setAttribute("data-rowid", toode.id);
+
+    //     tr.innerHTML = `
+    //         <td data-field="id">${toode.id}</td>
+    //         <td data-field="nimetus" className="editableText">${toode.nimetus}</td>
+    //         <td data-field="kogus" className="editableNumber">${toode.kogus}</td>
+    //         <td data-field="uhik" className="editableText">${toode.uhik}</td>
+    //         <td data-field="hind" className="editableNumber">${toode.hind}</td>
+    //         <td data-field="pilt" className="editableText">${toode.pilt}</td>
+    //         <td data-field="kategooria" className="editableCategory">${kategooria}</td>
+    //         <td><button onClick="updateToode(event)"><i class="fa fa-pencil fa-2x" aria-hidden="true"></i></button></td>
+    //         <td><button onClick="deleteToode(event)"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></button></td>
+    //     `;      
+
+    //     return tr;
+    // }
+
+    //Показ категорий
+    async function getKategooriad() {
+        const categorySelect = document.getElementById('categorySelect');
+        await fetch("https://localhost:7011/Kategooria")
+            .then(response => response.json())
+            .then(data => {
+                data.forEach(category => {
+                    const option = document.createElement('option');
+                    option.value = category.id;
+                    option.text = category.nimetus;
+                    categorySelect.appendChild(option);
+                });
+            })
+            .catch(error => console.error('Ошибка при получении данных Kategooria:', error));
+    }
+
+    //getTooted();
+    //getKategooriad();
+
+    //Удаление товара
+    async function deleteToode(event) {
+        const target = event.target;
+        const button = target.parentElement;
+        const row = button.parentElement.parentElement;
+        const rowId = row.getAttribute('data-rowid');
+
+        try {
+            const response = await fetch(`https://localhost:7011/Toode/${rowId}`, {
+                method: 'DELETE'
+            });
+            if (response.ok) {
+                // getTooted();
+                // const json = await response.json();
+                // setTooted(json); 
+            } else {
+                console.error('Failed to delete data:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error deleting data:', error);
+        }
+    }    
+
+    //Изменение ячеек на input поля
+    async function handleTableCellClick(event) {
+        const target = event.target;
+        if (target.classList.contains('editableText') || target.classList.contains('editableNumber')) {
+            const oldValue = target.innerText;
+            const input = document.createElement('input');
+            if (target.classList.contains('editableText')) {
+                input.type = 'text';
+            } else {
+                input.type = 'number';
+            }
+            
+            input.value = oldValue;
+
+            input.addEventListener('blur', () => {
+                const newValue = input.value;
+                target.innerText = newValue;
+            });
+
+            target.innerText = '';
+            target.appendChild(input);
+            input.focus();
+        }        
+        else if (target.classList.contains('editableCategory')) {                
+            const oldValue = target.innerText;
+            const select = document.createElement('select');
+
+            await fetch("https://localhost:7011/Kategooria/")
+                .then(response => response.json())
+                .then(data => {
+                    data.forEach(category => {
+                        const option = document.createElement('option');
+                        option.value = category.nimetus;
+                        option.text = category.nimetus;
+                        select.appendChild(option);
+                    });
+                })
+                .catch(error => console.error('Ошибка при получении данных с сервера:', error));
+
+            select.addEventListener('blur', () => {
+                const newValue = select.value;
+                target.innerText = newValue;
+            });
+
+            target.innerText = '';
+            target.appendChild(select);
+            select.focus();
+
+            const options = select.querySelectorAll('option');
+            options.forEach(option => {
+                if (option.value === oldValue) {
+                    option.selected = true;
+                }
+            });
+        }
+    }
+
+    //Изменение товара
+    async function updateToode(event) {
+        const target = event.target;
+        const button = target.parentElement;
+        const row = button.parentElement.parentElement;
+
+        const id = row.getAttribute('data-rowid');
+        const nimetus = row.querySelector('[data-field="nimetus"]').innerText;
+        const kogus = row.querySelector('[data-field="kogus"]').innerText;
+        const uhik = row.querySelector('[data-field="uhik"]').innerText;
+        const hind = row.querySelector('[data-field="hind"]').innerText;
+        const pilt = row.querySelector('[data-field="pilt"] div').innerText;
+        const kategooria = row.querySelector('[data-field="kategooria"]').innerText;
+
+        const data = { id, nimetus, kogus, uhik, hind, pilt, kategooria };
+
+        try {
+            const response = await fetch("https://localhost:7011/Toode", {
+                method: 'PUT',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(data)
+            });
+
+            if (response.ok) {
+                alert('Nice');
+            } else {
+                console.error('Failed to update data:', response.statusText);
+            }
+        } catch (error) {
+            console.error('Error updating data:', error);
+        }
+    }
     
+    //Добавление футболиста
+    async function AddToode() {
+        const nimetus = document.getElementById("nimetus").value;
+        const kogus = document.getElementById("kogus").value;
+        const uhik = document.getElementById("uhik").value;
+        const arve = document.getElementById("arve").value;
+        const pilt = document.getElementById("pilt").value;
+        const kategooria = document.getElementById("categorySelect").value;
+
+        if (!nimetus || !kogus || !uhik || !arve || !pilt) {
+            alert("Заполните все поля");
+            return;
+        }
+
+        const data = { nimetus, kogus, uhik, arve, pilt, kategooria };
+        
+        const response = await fetch("https://localhost:7011/Toode", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(data)
+        });
+        if (response.ok) {
+            //getTooted();
+            alert("Player is added");
+            document.getElementById("nimetus").value = "";
+            document.getElementById("kogus").value = "";
+            document.getElementById("uhik").value = "";
+            document.getElementById("arve").value = "";
+            document.getElementById("pilt").value = "";
+        }
+    }
+
     return (
         <div className='App'>
             <NavigationPanel /> 
-            <section className="welcome-section">
+            {auth.isAdmin ? (
+            <div>
+                <section className="welcome-section">
                 <h1>Tellimused</h1>
                 <p>
-                    <table id="tellimusedTable">
+                    <table className='custom-table' id="tootedTable">
                         <thead>
                             <tr>
-                                <th>Tellimus ID</th>
-                                <th>Kategooria</th>
+                                <th>Toode ID</th>
                                 <th>Nimetus</th>
                                 <th>Kogus</th>
-                                <th>Arve <button><i className="fa fa-arrow-down" aria-hidden="true"></i></button></th>
-                                <th>Tellija</th>
-                                <th>Kuupäev</th>
-                                <th colspan="2"></th>
+                                <th>Ühik</th>
+                                <th>Hind</th>
+                                <th>Pilt</th>
+                                <th>Kategooria ID</th>
+                                <th colSpan="2"></th>
                             </tr>
                         </thead>
-                        <tbody>
+                        <tbody onClick={(event) => handleTableCellClick(event)}>
+                            {tooted.map((toode) => (
+                                <tr>
+                                    <td data-field="id">{toode.id}</td>
+                                    <td data-field="nimetus" className="editableText">{toode.nimetus}</td>
+                                    <td data-field="kogus" className="editableNumber">{toode.kogus}</td>
+                                    <td data-field="uhik" className="editableText">{toode.uhik}</td>
+                                    <td data-field="hind" className="editableNumber">{toode.hind}€</td>
+                                    <td data-field="pilt" className="editableText" style={{ maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                        <div style={{ overflowY: 'auto', maxHeight: '75px' }}>{toode.pilt}</div>
+                                    </td>
+                                    <td data-field="kategooria" className="editableCategory">{toode.kategooriaId}</td>
+                                    <td><button onClick={(event) =>updateToode(event)}><i className="fa fa-pencil fa-2x" aria-hidden="true"></i></button></td>
+                                    <td><button onClick={(event) =>deleteToode(event)}><i className="fa fa-trash fa-2x" aria-hidden="true"></i></button></td>
+                                </tr>
+                            ))}
                         </tbody>
                     </table>
                 </p>
                 </section>
                 <section className="projects-section">
-                    <h2 className="projects-section-header">Tellimuse lisamine</h2>
-                    <form method="post" id="tellimusForm">
-                        <div><label>Kategooria:<input type="text" name="kategooria" required /></label></div>
-                        <div><label>Nimetus:<input type="text" name="nimetus" required /></label></div>
-                        <div><label>Kogus:<input type="number" name="kogus" min="0" required /></label></div>
-                        <div><label>Arve: (€)<input type="number" name="arve" min="0" required /></label></div>
-                        <div><label>Tellija:<input type="text" name="tellija" required /></label></div>
-                        <div><label>Kuupäev:<input type="date" name="kuupaev" required /></label></div>
-                        <input type="submit" value="Lisa tellimus" />
-                    </form>
-            </section>        
+                    <h2 className="projects-section-header">Toode lisamine</h2>
+                    <div className="divForm">
+                        <label>Nimetus:<input type="text" id="nimetus" /></label>
+                        <label>Kogus:<input type="number" id="kogus" min="0" /></label>
+                        <label>Ühik:<input type="text" id="uhik" /></label>
+                        <label>Hind: (€)<input type="number" id="arve" min="0" /></label>
+                        <label>Pilt:<input type="text" id="pilt" /></label>
+                        <label>Kategooria: <br /><select id="categorySelect"></select></label>
+                        <button onClick={AddToode}>Lisa Toode</button>
+                    </div>
+                </section>  
+            </div>            
+            ) : (
+                <section className="welcome-section">
+                    <h1>Вы не админ</h1>
+                </section>
+            )}       
         </div>
     );
 }

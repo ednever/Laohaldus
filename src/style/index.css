@@ -355,6 +355,7 @@ img {
 }
 
 .custom-table input[type="number"] {
+
   width: 50px;
   padding: 8px;
   border: 1px solid #ccc;
@@ -428,3 +429,52 @@ img {
 
 /*---------------------------------------------------*/
 
+.divForm {
+  max-width: 600px;
+  margin: 20px auto;
+  padding: 20px;
+  background-color: #ffffff;
+  border: 1px solid #dddddd;
+  border-radius: 8px;
+}
+
+
+label {
+  color: var(--main-gray);
+  text-align: left;
+  display: block;
+  margin-bottom: 8px;
+}
+
+.divForm button {
+  background-color: var(--main-red);
+  color: #fff;
+  padding: 10px; /* 20px;*/
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  font-size: 16px;
+  transition: background-color 0.3s;
+}
+
+.divForm button:hover {
+  background-color: #0056b3;
+}
+
+.divForm button:active {
+  background-color: #003f7f;
+}
+
+.divForm input {
+  width: 100%;
+  padding: 10px;
+  margin-bottom: 15px;
+  border: 1px solid #dddddd;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+
+.divForm input:focus {
+  outline: none;
+  border-color: #007bff;
+}

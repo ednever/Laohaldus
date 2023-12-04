@@ -66,7 +66,7 @@ function OstukorvPage() {
     <div className="App">
       <NavigationPanel />
       {auth.isAuthenticated ? (
-        <section id="welcome-section" className="welcome-section">
+        <section className="welcome-section">
           <h1>Ostukorv</h1>
           <p>
             <table className="custom-table">
@@ -100,10 +100,9 @@ function OstukorvPage() {
           <p><button className='maksebtn' onClick={() => Maksa()}>Maksa</button></p>
         </section>
         ) : (
-          <section id="welcome-section" className="welcome-section">
-            <h1>Ostukorv</h1>
-            <p>Войдите в аккаунт чтобы пользоваться корзиной</p>
-          </section>
+          <section className="welcome-section">
+          <h1>Ostukorv</h1>
+        </section>
       )}     
     </div>
   );
