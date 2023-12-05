@@ -355,7 +355,6 @@ img {
 }
 
 .custom-table input[type="number"] {
-
   width: 50px;
   padding: 8px;
   border: 1px solid #ccc;
@@ -367,6 +366,14 @@ img {
 .custom-table input[type="number"]:focus {
   outline: none;
   border-color: #007bff;
+}
+
+.custom-table input, 
+.custom-table select {
+  margin: 0;
+  width: 100px;
+  font-family: 'Poppins', sans-serif;
+  font-size: 1.8rem;
 }
 
 /*---------------------------------------------------*/

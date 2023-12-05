@@ -5,111 +5,55 @@ import NavigationPanel from './NavigationPanel';
 function AdminPage() {
     const auth = useContext(AuthContext);
     const [tooted, setTooted] = useState([]);
+    const [kategooriad, setKategooriad] = useState([]);
     
-
-    useEffect(() => {
-        async function fetchData() {
-            try {
-                const response = await fetch("https://localhost:7011/Toode", {
+    //Показ таблицы и категорий
+    async function fetchData() {
+        try {
+            const response = await fetch("https://localhost:7011/Toode", {
+                method: "GET",
+                headers: { "Accept": "application/json" }
+            });
+            if (response.ok) {
+                const json = await response.json();
+                setTooted(json); 
+                const responseK = await fetch("https://localhost:7011/Kategooria", {
                     method: "GET",
                     headers: { "Accept": "application/json" }
                 });
-                if (response.ok) {
-                    const json = await response.json();
-                    setTooted(json);                          
+                if (responseK.ok) {
+                    const jsonK = await responseK.json();
+                    setKategooriad(jsonK);
+
                 } else {
-                    console.error("Ошибка при получении данных Toode:", response.status, response.statusText);        
-                }
-      
-            } catch (error) {
-                console.error("Произошла ошибка при запросе:", error);
+                    console.error("Ошибка при получении данных Kategooria:", responseK.status, responseK.statusText);
+                }                     
+            } else {
+                console.error("Ошибка при получении данных Toode:", response.status, response.statusText);        
             }
-          }
-        
-          fetchData();
-    }, []);
-
-    // async function getTooted() {                
-    //     const response = await fetch("https://localhost:7011/Toode", {
-    //         method: "GET",
-    //         headers: { "Accept": "application/json" }
-    //     });
-    //     if (response.ok === true) {
-    //         const tooted = await response.json();
-    //         const rows = document.querySelector("tbody");
-    //         rows.innerHTML = " ";
-    //         for (const toode of tooted) {
-    //             let kategooria = "";
-
-    //             //Вместо ID команды показывается название
-    //             const responseK = await fetch("https://localhost:7011/Kategooria/" + toode.kategooriaId, {
-    //                 method: "GET",
-    //                 headers: { "Accept": "application/json" }
-    //             });
-
-    //             if (responseK.ok === true) {
-    //                 kategooria = await responseK.text();
-    //             }
-
-    //             //rows.append(row(toode, kategooria.replace(/"/g, '')));
-    //         }
-    //     }         
-    // }
-
-    //Создание строки для таблицы
-    // function row(toode, kategooria) {
-    //     const tr = document.createElement("tr");
-    //     tr.setAttribute("data-rowid", toode.id);
-
-    //     tr.innerHTML = `
-    //         <td data-field="id">${toode.id}</td>
-    //         <td data-field="nimetus" className="editableText">${toode.nimetus}</td>
-    //         <td data-field="kogus" className="editableNumber">${toode.kogus}</td>
-    //         <td data-field="uhik" className="editableText">${toode.uhik}</td>
-    //         <td data-field="hind" className="editableNumber">${toode.hind}</td>
-    //         <td data-field="pilt" className="editableText">${toode.pilt}</td>
-    //         <td data-field="kategooria" className="editableCategory">${kategooria}</td>
-    //         <td><button onClick="updateToode(event)"><i class="fa fa-pencil fa-2x" aria-hidden="true"></i></button></td>
-    //         <td><button onClick="deleteToode(event)"><i class="fa fa-trash fa-2x" aria-hidden="true"></i></button></td>
-    //     `;      
-
-    //     return tr;
-    // }
-
-    //Показ категорий
-    async function getKategooriad() {
-        const categorySelect = document.getElementById('categorySelect');
-        await fetch("https://localhost:7011/Kategooria")
-            .then(response => response.json())
-            .then(data => {
-                data.forEach(category => {
-                    const option = document.createElement('option');
-                    option.value = category.id;
-                    option.text = category.nimetus;
-                    categorySelect.appendChild(option);
-                });
-            })
-            .catch(error => console.error('Ошибка при получении данных Kategooria:', error));
+  
+        } catch (error) {
+            console.error("Произошла ошибка при запросе:", error);
+        }
     }
 
-    //getTooted();
-    //getKategooriad();
+    //Превращение Id категории в название
+    function getKat(id){  
+        for (const kategooria of kategooriad) {
+            if (kategooria.id = id) {
+                return kategooria.nimetus;
+            }
+        } 
+    } 
 
     //Удаление товара
-    async function deleteToode(event) {
-        const target = event.target;
-        const button = target.parentElement;
-        const row = button.parentElement.parentElement;
-        const rowId = row.getAttribute('data-rowid');
-
+    async function deleteToode(id) {
         try {
-            const response = await fetch(`https://localhost:7011/Toode/${rowId}`, {
+            const response = await fetch(`https://localhost:7011/Toode/${id}`, {
                 method: 'DELETE'
             });
             if (response.ok) {
-                // getTooted();
-                // const json = await response.json();
-                // setTooted(json); 
+                fetchData();
             } else {
                 console.error('Failed to delete data:', response.statusText);
             }
@@ -118,10 +62,10 @@ function AdminPage() {
         }
     }    
 
-    //Изменение ячеек на input поля
-    async function handleTableCellClick(event) {
+    //Изменение ячеек на input поля    
+    async function handleTableCellClick(event) { //Решить проблему с картинками
         const target = event.target;
-        if (target.classList.contains('editableText') || target.classList.contains('editableNumber')) {
+        if (target.classList.contains('editableText') || target.classList.contains('editableNumber') || target.classList.contains('editableHind')) {
             const oldValue = target.innerText;
             const input = document.createElement('input');
             if (target.classList.contains('editableText')) {
@@ -130,11 +74,19 @@ function AdminPage() {
                 input.type = 'number';
             }
             
-            input.value = oldValue;
+            if (target.classList.contains('editableHind')) {
+                input.value = oldValue.replace("€", "");
+            } else {
+                input.value = oldValue;
+            }            
 
             input.addEventListener('blur', () => {
                 const newValue = input.value;
-                target.innerText = newValue;
+                if (target.classList.contains('editableHind')) {
+                    target.innerText = newValue + "€";
+                } else {
+                    target.innerText = newValue;
+                }                  
             });
 
             target.innerText = '';
@@ -175,31 +127,38 @@ function AdminPage() {
         }
     }
 
-    //Изменение товара
-    async function updateToode(event) {
-        const target = event.target;
-        const button = target.parentElement;
-        const row = button.parentElement.parentElement;
-
+    //Изменение товара   
+    async function updateToode(row) { //Проблема с картинкой
         const id = row.getAttribute('data-rowid');
         const nimetus = row.querySelector('[data-field="nimetus"]').innerText;
         const kogus = row.querySelector('[data-field="kogus"]').innerText;
         const uhik = row.querySelector('[data-field="uhik"]').innerText;
-        const hind = row.querySelector('[data-field="hind"]').innerText;
-        const pilt = row.querySelector('[data-field="pilt"] div').innerText;
-        const kategooria = row.querySelector('[data-field="kategooria"]').innerText;
+        let hind = row.querySelector('[data-field="hind"]').innerText;
+        hind = hind.replace("€", "");
+        const pilt = row.querySelector('[data-field="pilt"]').innerText;
+        let kategooria = row.querySelector('[data-field="kategooria"]').innerText;
 
+        for (const kink of kategooriad) {
+            if (kink.nimetus = kategooria) {
+                kategooria = kink.id;
+            }
+        } 
+        //Преобразовывать название в ID
+        kategooria = "5";
+        alert(kategooria);
         const data = { id, nimetus, kogus, uhik, hind, pilt, kategooria };
 
+        alert(JSON.stringify(Object.values(data)));
         try {
             const response = await fetch("https://localhost:7011/Toode", {
                 method: 'PUT',
                 headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(data)
+                body: JSON.stringify(Object.values(data))
             });
 
             if (response.ok) {
-                alert('Nice');
+                fetchData();
+                alert('Данные изменены');                
             } else {
                 console.error('Failed to update data:', response.statusText);
             }
@@ -208,7 +167,7 @@ function AdminPage() {
         }
     }
     
-    //Добавление футболиста
+    //Добавление товара
     async function AddToode() {
         const nimetus = document.getElementById("nimetus").value;
         const kogus = document.getElementById("kogus").value;
@@ -223,29 +182,34 @@ function AdminPage() {
         }
 
         const data = { nimetus, kogus, uhik, arve, pilt, kategooria };
+        alert(`${nimetus}, ${kogus}, ${uhik}, ${arve}, ${pilt}, ${kategooria}`);
         
         const response = await fetch("https://localhost:7011/Toode", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(data)
+            body: JSON.stringify(Object.values(data))
         });
         if (response.ok) {
-            //getTooted();
-            alert("Player is added");
+            fetchData();
             document.getElementById("nimetus").value = "";
             document.getElementById("kogus").value = "";
             document.getElementById("uhik").value = "";
             document.getElementById("arve").value = "";
             document.getElementById("pilt").value = "";
+            window.location.href = "#firstSection";
         }
     }
+
+    useEffect(() => {
+        fetchData();
+    }, []);
 
     return (
         <div className='App'>
             <NavigationPanel /> 
             {auth.isAdmin ? (
             <div>
-                <section className="welcome-section">
+                <section id="firstSection" className="welcome-section">
                 <h1>Tellimused</h1>
                 <p>
                     <table className='custom-table' id="tootedTable">
@@ -257,24 +221,22 @@ function AdminPage() {
                                 <th>Ühik</th>
                                 <th>Hind</th>
                                 <th>Pilt</th>
-                                <th>Kategooria ID</th>
+                                <th>Kategooria</th>
                                 <th colSpan="2"></th>
                             </tr>
                         </thead>
                         <tbody onClick={(event) => handleTableCellClick(event)}>
                             {tooted.map((toode) => (
-                                <tr>
+                                <tr data-rowid={toode.id}>
                                     <td data-field="id">{toode.id}</td>
                                     <td data-field="nimetus" className="editableText">{toode.nimetus}</td>
                                     <td data-field="kogus" className="editableNumber">{toode.kogus}</td>
                                     <td data-field="uhik" className="editableText">{toode.uhik}</td>
-                                    <td data-field="hind" className="editableNumber">{toode.hind}€</td>
-                                    <td data-field="pilt" className="editableText" style={{ maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-                                        <div style={{ overflowY: 'auto', maxHeight: '75px' }}>{toode.pilt}</div>
-                                    </td>
-                                    <td data-field="kategooria" className="editableCategory">{toode.kategooriaId}</td>
-                                    <td><button onClick={(event) =>updateToode(event)}><i className="fa fa-pencil fa-2x" aria-hidden="true"></i></button></td>
-                                    <td><button onClick={(event) =>deleteToode(event)}><i className="fa fa-trash fa-2x" aria-hidden="true"></i></button></td>
+                                    <td data-field="hind" className="editableHind">{toode.hind}€</td>
+                                    <td data-field="pilt" className="editableText">pilt</td>
+                                    <td data-field="kategooria" className="editableCategory">{getKat(toode.kategooriaId)}</td>
+                                    <td><button onClick={() => updateToode(document.querySelector(`[data-rowid="${toode.id}"]`))}><i className="fa fa-pencil fa-2x" aria-hidden="true"></i></button></td>
+                                    <td><button onClick={() => deleteToode(toode.id)}><i className="fa fa-trash fa-2x" aria-hidden="true"></i></button></td>
                                 </tr>
                             ))}
                         </tbody>
@@ -289,7 +251,11 @@ function AdminPage() {
                         <label>Ühik:<input type="text" id="uhik" /></label>
                         <label>Hind: (€)<input type="number" id="arve" min="0" /></label>
                         <label>Pilt:<input type="text" id="pilt" /></label>
-                        <label>Kategooria: <br /><select id="categorySelect"></select></label>
+                        <label>Kategooria: <br />
+                            <select id="categorySelect">
+                                {kategooriad.map((kategooria) => (<option value={kategooria.id}>{kategooria.nimetus}</option>))}
+                            </select>
+                        </label>
                         <button onClick={AddToode}>Lisa Toode</button>
                     </div>
                 </section>  
@@ -303,4 +269,7 @@ function AdminPage() {
     );
 }
 
+// <td data-field="pilt" className="editableText" style={{ maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+//                                         <div style={{ overflowY: 'auto', maxHeight: '75px' }}>{toode.pilt}</div>
+//                                     </td>
 export default AdminPage;
