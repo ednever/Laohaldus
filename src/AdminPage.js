@@ -37,14 +37,51 @@ function AdminPage() {
         }
     }
 
+    useEffect(() => {
+        fetchData();
+    }, []);
+
     //Превращение Id категории в название
     function getKat(id){  
         for (const kategooria of kategooriad) {
-            if (kategooria.id = id) {
+            if (kategooria.id === id) {
                 return kategooria.nimetus;
             }
         } 
     } 
+
+    //Добавление товара
+    async function AddToode() {
+        const nimetus = document.getElementById("nimetus").value;
+        const kogus = document.getElementById("kogus").value;
+        const uhik = document.getElementById("uhik").value;
+        const arve = document.getElementById("arve").value;
+        const pilt = document.getElementById("pilt").value;
+        const kategooria = document.getElementById("categorySelect").value;
+
+        if (!nimetus || !kogus || !uhik || !arve || !pilt) {
+            alert("Заполните все поля");
+            return;
+        }
+
+        const data = { nimetus, kogus, uhik, arve, pilt, kategooria };
+        alert(`${nimetus}, ${kogus}, ${uhik}, ${arve}, ${pilt}, ${kategooria}`);
+        
+        const response = await fetch("https://localhost:7011/Toode", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(Object.values(data))
+        });
+        if (response.ok) {
+            fetchData();
+            document.getElementById("nimetus").value = "";
+            document.getElementById("kogus").value = "";
+            document.getElementById("uhik").value = "";
+            document.getElementById("arve").value = "";
+            document.getElementById("pilt").value = "";
+            window.location.href = "#firstSection";
+        }
+    }
 
     //Удаление товара
     async function deleteToode(id) {
@@ -60,7 +97,7 @@ function AdminPage() {
         } catch (error) {
             console.error('Error deleting data:', error);
         }
-    }    
+    } 
 
     //Изменение ячеек на input поля    
     async function handleTableCellClick(event) { //Решить проблему с картинками
@@ -136,19 +173,9 @@ function AdminPage() {
         let hind = row.querySelector('[data-field="hind"]').innerText;
         hind = hind.replace("€", "");
         const pilt = row.querySelector('[data-field="pilt"]').innerText;
-        let kategooria = row.querySelector('[data-field="kategooria"]').innerText;
+        const kategooria = row.querySelector('[data-field="kategooria"]').innerText;
 
-        for (const kink of kategooriad) {
-            if (kink.nimetus = kategooria) {
-                kategooria = kink.id;
-            }
-        } 
-        //Преобразовывать название в ID
-        kategooria = "5";
-        alert(kategooria);
         const data = { id, nimetus, kogus, uhik, hind, pilt, kategooria };
-
-        alert(JSON.stringify(Object.values(data)));
         try {
             const response = await fetch("https://localhost:7011/Toode", {
                 method: 'PUT',
@@ -166,43 +193,6 @@ function AdminPage() {
             console.error('Error updating data:', error);
         }
     }
-    
-    //Добавление товара
-    async function AddToode() {
-        const nimetus = document.getElementById("nimetus").value;
-        const kogus = document.getElementById("kogus").value;
-        const uhik = document.getElementById("uhik").value;
-        const arve = document.getElementById("arve").value;
-        const pilt = document.getElementById("pilt").value;
-        const kategooria = document.getElementById("categorySelect").value;
-
-        if (!nimetus || !kogus || !uhik || !arve || !pilt) {
-            alert("Заполните все поля");
-            return;
-        }
-
-        const data = { nimetus, kogus, uhik, arve, pilt, kategooria };
-        alert(`${nimetus}, ${kogus}, ${uhik}, ${arve}, ${pilt}, ${kategooria}`);
-        
-        const response = await fetch("https://localhost:7011/Toode", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(Object.values(data))
-        });
-        if (response.ok) {
-            fetchData();
-            document.getElementById("nimetus").value = "";
-            document.getElementById("kogus").value = "";
-            document.getElementById("uhik").value = "";
-            document.getElementById("arve").value = "";
-            document.getElementById("pilt").value = "";
-            window.location.href = "#firstSection";
-        }
-    }
-
-    useEffect(() => {
-        fetchData();
-    }, []);
 
     return (
         <div className='App'>
