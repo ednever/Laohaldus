@@ -65,7 +65,6 @@ function AdminPage() {
         }
 
         const data = { nimetus, kogus, uhik, arve, pilt, kategooria };
-        alert(`${nimetus}, ${kogus}, ${uhik}, ${arve}, ${pilt}, ${kategooria}`);
         
         const response = await fetch("https://localhost:7011/Toode", {
             method: "POST",
@@ -200,37 +199,41 @@ function AdminPage() {
             {auth.isAdmin ? (
             <div>
                 <section id="firstSection" className="welcome-section">
-                <h1>Tellimused</h1>
+                <h1>Tooted</h1>
                 <p>
-                    <table className='custom-table' id="tootedTable">
-                        <thead>
-                            <tr>
-                                <th>Toode ID</th>
-                                <th>Nimetus</th>
-                                <th>Kogus</th>
-                                <th>Ühik</th>
-                                <th>Hind</th>
-                                <th>Pilt</th>
-                                <th>Kategooria</th>
-                                <th colSpan="2"></th>
-                            </tr>
-                        </thead>
-                        <tbody onClick={(event) => handleTableCellClick(event)}>
-                            {tooted.map((toode) => (
-                                <tr data-rowid={toode.id}>
-                                    <td data-field="id">{toode.id}</td>
-                                    <td data-field="nimetus" className="editableText">{toode.nimetus}</td>
-                                    <td data-field="kogus" className="editableNumber">{toode.kogus}</td>
-                                    <td data-field="uhik" className="editableText">{toode.uhik}</td>
-                                    <td data-field="hind" className="editableHind">{toode.hind}€</td>
-                                    <td data-field="pilt" className="editableText">pilt</td>
-                                    <td data-field="kategooria" className="editableCategory">{getKat(toode.kategooriaId)}</td>
-                                    <td><button onClick={() => updateToode(document.querySelector(`[data-rowid="${toode.id}"]`))}><i className="fa fa-pencil fa-2x" aria-hidden="true"></i></button></td>
-                                    <td><button onClick={() => deleteToode(toode.id)}><i className="fa fa-trash fa-2x" aria-hidden="true"></i></button></td>
+                    <div className="table-container">
+                        <table className='custom-table' id="tootedTable">
+                            <thead>
+                                <tr>
+                                    <th>Toode ID</th>
+                                    <th>Nimetus</th>
+                                    <th>Kogus</th>
+                                    <th>Ühik</th>
+                                    <th>Hind</th>
+                                    <th>Pilt</th>
+                                    <th>Kategooria</th>
+                                    <th colSpan="2"></th>
                                 </tr>
-                            ))}
-                        </tbody>
-                    </table>
+                            </thead>
+                            <tbody onClick={(event) => handleTableCellClick(event)}>
+                                {tooted.map((toode) => (
+                                    <tr data-rowid={toode.id}>
+                                        <td data-field="id">{toode.id}</td>
+                                        <td data-field="nimetus" className="editableText">{toode.nimetus}</td>
+                                        <td data-field="kogus" className="editableNumber">{toode.kogus}</td>
+                                        <td data-field="uhik" className="editableText">{toode.uhik}</td>
+                                        <td data-field="hind" className="editableHind">{toode.hind}€</td>
+                                        <td style={{ maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
+                                            <div data-field="pilt" className="editableText" style={{ overflowY: 'auto', maxHeight: '75px' }}>{toode.pilt}</div>
+                                        </td>
+                                        <td data-field="kategooria" className="editableCategory">{getKat(toode.kategooriaId)}</td>
+                                        <td><button onClick={() => updateToode(document.querySelector(`[data-rowid="${toode.id}"]`))}><i className="fa fa-pencil fa-2x" aria-hidden="true"></i></button></td>
+                                        <td><button onClick={() => deleteToode(toode.id)}><i className="fa fa-trash fa-2x" aria-hidden="true"></i></button></td>
+                                    </tr>
+                                ))}
+                            </tbody>
+                        </table>
+                    </div>
                 </p>
                 </section>
                 <section className="projects-section">
@@ -259,7 +262,5 @@ function AdminPage() {
     );
 }
 
-// <td data-field="pilt" className="editableText" style={{ maxWidth: '300px', overflow: 'hidden', textOverflow: 'ellipsis' }}>
-//                                         <div style={{ overflowY: 'auto', maxHeight: '75px' }}>{toode.pilt}</div>
-//                                     </td>
+
 export default AdminPage;

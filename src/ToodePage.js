@@ -49,28 +49,45 @@ function ToodePage() {
     return (
         <div className='App'>
             <NavigationPanel />
-            <section className="welcome-section">
+            <section className="projects-section">
                 
                 {toode ? (
                     <div>
                         <h1>{toode.nimetus}</h1>
-                        <div className="test-grid">
-                            <div className="test" key={toode.id}>
-                                <a className="test-tile">
-                                    <img className="test-image" src={toode.pilt} alt="toode" />                                                             
-                                    <div className="test-details">
-                                        <p>Kogus: {toode.kogus} {toode.uhik}</p>
-                                        <p>Hind: {toode.hind}€</p>
-                                    </div>
-                                </a>
-                            </div>                            
-                        </div>  
-                        <input id={toode.id} type='number' min={0} max={toode.kogus}/>
-                        {auth.isAuthenticated ? (
-                            <button id={'button' + toode.id} onClick={() => LisaToodeOstukorvi(toode.id, document.getElementById(`${toode.id}`).value)}><i class="fa fa-shopping-cart fa-2x fa-fw"></i></button>
-                        ) : (
-                            <button onClick={() => alert('Чтобы добавить товар в корзину войдите в аккаунт')}><i className="fa fa-user-circle-o fa-2x fa-fw"></i></button>
-                        )}
+                        <div className="image-container">                        
+                            <div className="test-grid">
+                                <div className="test" key={toode.id}>
+                                    <a className="test-tile">
+                                        <img className="test-image" src={toode.pilt} alt="toode" />                                                             
+                                        <div className="test-details">
+                                            <p>Kogus: {toode.kogus} {toode.uhik}</p>
+                                            <p>Hind: {toode.hind}€</p>
+                                        </div>
+                                    </a>
+                                </div>                            
+                            </div> 
+                        </div> 
+                        <table className='custom-table'>
+                            <thead>
+                                <tr>
+                                    <th>Kogus</th>
+                                    <th></th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td><input id={toode.id} type='number' min={0} max={toode.kogus}/></td>
+                                    <td>
+                                        {auth.isAuthenticated ? (
+                                            <button id={'button' + toode.id} onClick={() => LisaToodeOstukorvi(toode.id, document.getElementById(`${toode.id}`).value)}><i class="fa fa-shopping-cart fa-2x fa-fw"></i></button>
+                                        ) : (
+                                            <button onClick={() => alert('Чтобы добавить товар в корзину войдите в аккаунт')}><i className="fa fa-user-circle-o fa-2x fa-fw"></i></button>
+                                        )}
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                        
                     </div>                                                                                
                 ) : (
                     <div>
