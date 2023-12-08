@@ -95,7 +95,7 @@ function OstukorvPage() {
             });
 
             if (response.ok) {
-              alert('Данные изменены');                
+              console.log('Данные изменены');                
             } else {
               console.error('Failed to update data:', response.statusText);
             }
